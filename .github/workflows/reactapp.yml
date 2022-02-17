@@ -10,8 +10,8 @@ on:
  pull_request:
     types: [opened, reopened]
     branches: [develop, master]
-    paths: 
-      - 'reactapp/**'
+    # paths: 
+      # - 'reactapp/**'
 
 jobs:
 
