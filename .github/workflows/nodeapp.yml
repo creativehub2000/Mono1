@@ -20,12 +20,12 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Do other steps
-      run: echo "Do other steps here..."
-
     - name: Checkout repository
       uses: actions/checkout@v2
-            
+      
+    - name: Do other steps
+      run: echo "Do other steps here..."
+      
     # - name: Setup Node.js ${{ env.NODE_VERSION }}
     #   uses: actions/setup-node@v2
     #   with:
