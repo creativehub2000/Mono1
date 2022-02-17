@@ -20,5 +20,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Detect File changes
+      uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        filters: |
+          src:
+            - 'reactapp/**'
+
+    - if: steps.changes.outputs.src == 'false'
+        exit 1
+
     - name: Do other steps
       run: echo "Do other steps here..."

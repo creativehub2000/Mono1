@@ -4,8 +4,8 @@ on:
  pull_request:
     types: [opened, reopened]
     branches: [develop, master]
-    paths:
-      - 'nodeapp/**'
+    # paths:
+    #   - 'nodeapp/**'
     
 env:
   NODE_VERSION: '14.x'
@@ -20,6 +20,18 @@ jobs:
         working-directory: nodeapp
     
     steps:
+    - name: Detect File changes
+      uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        filters: |
+          src:
+            - 'nodeapp/**'
+
+    - if: steps.changes.outputs.src == 'false'
+        exit 1
+
+
     - name: Checkout repository
       uses: actions/checkout@v2
       
