@@ -10,9 +10,8 @@ on:
  pull_request:
     types: [opened, reopened]
     branches: [develop, master]
-    paths-ignore: 
-      - "nodeapp/**"
-      - ".github/**"
+    paths: 
+      - 'reactapp/**'
 
 jobs:
 

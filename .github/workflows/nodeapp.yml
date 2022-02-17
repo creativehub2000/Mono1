@@ -4,9 +4,8 @@ on:
  pull_request:
     types: [opened, reopened]
     branches: [develop, master]
-    paths-ignore:
-      - "reactapp/**"
-      - ".github/**"
+    paths:
+      - 'nodeapp/**'
     
 env:
   NODE_VERSION: '14.x'
