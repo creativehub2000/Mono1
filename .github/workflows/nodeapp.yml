@@ -30,7 +30,7 @@ jobs:
 
     - name: Check Workflow need to run
       if: steps.changes.outputs.src == 'false'
-        run exit 1
+      run: exit 1
 
 
     - name: Checkout repository
