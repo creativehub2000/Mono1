@@ -1,16 +1,16 @@
 name: React App CI
 
-on:
- workflow_run:
-    workflows: [Node App CI]
-    types: [completed]
-    branches: [develop, master]
-    paths-ignore: ['nodeapp/**', '.github/**']
 # on:
-#  pull_request:
-#     types: [opened, reopened]
+#  workflow_run:
+#     workflows: [Node App CI]
+#     types: [completed]
 #     branches: [develop, master]
-#     paths: ['reactapp/**']
+#     paths-ignore: ['nodeapp/**', '.github/**']
+on:
+ pull_request:
+    types: [opened, reopened]
+    branches: [develop, master]
+    paths-ignore: [nodeapp/**', '.github/**']
 
 jobs:
 
