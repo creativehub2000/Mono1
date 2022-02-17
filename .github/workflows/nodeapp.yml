@@ -7,17 +7,16 @@ on:
     paths-ignore: ['nodeapp/**']
     
 env:
-  NODE_VERSION: '14.x'                                             # set this to the node version to use
-
-defaults:
-      run:
-        working-directory: nodeapp
+  NODE_VERSION: '14.x'
 
 jobs:
 
   Job1-Build-NodeApp:
     name: Node App
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: nodeapp
     
     steps:
     - name: Checkout repository
@@ -50,6 +49,9 @@ jobs:
     name: Create Issue
     runs-on: ubuntu-latest
     needs: [Job1-Build-NodeApp]
+    defaults:
+      run:
+        working-directory: nodeapp
 
     steps:
     - name: Do other steps
