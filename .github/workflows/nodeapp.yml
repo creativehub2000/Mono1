@@ -14,7 +14,7 @@ env:
 
 defaults:
       run:
-        working-directory: ./nodeapp
+        working-directory: nodeapp
 
 jobs:
 
