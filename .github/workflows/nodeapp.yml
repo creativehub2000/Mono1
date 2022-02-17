@@ -20,6 +20,10 @@ jobs:
         working-directory: nodeapp
     
     steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
     - name: Detect File changes
       uses: dorny/paths-filter@v2
       id: changes
@@ -31,10 +35,6 @@ jobs:
     - name: Check Workflow need to run
       if: steps.changes.outputs.src == 'false'
       run: exit 1
-
-
-    - name: Checkout repository
-      uses: actions/checkout@v2
       
     - name: Do other steps
       run: echo "Do other steps here..."
