@@ -28,8 +28,9 @@ jobs:
           src:
             - 'nodeapp/**'
 
-    - if: steps.changes.outputs.src == 'false'
-        exit 1
+    - name: Check Workflow need to run
+      if: steps.changes.outputs.src == 'false'
+        run exit 1
 
 
     - name: Checkout repository
