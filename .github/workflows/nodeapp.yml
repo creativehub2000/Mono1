@@ -5,9 +5,6 @@ on:
     types: [opened, reopened]
     branches: [develop, master]
     paths-ignore: ['nodeapp/**']
- push:
-    branches: [develop, master]
-    paths-ignore: ['nodeapp/**']
     
 env:
   NODE_VERSION: '14.x'                                             # set this to the node version to use
@@ -26,8 +23,8 @@ jobs:
     - name: Do other steps
       run: echo "Do other steps here..."
 
-    # - name: Checkout repository
-    #   uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
             
     # - name: Setup Node.js ${{ env.NODE_VERSION }}
     #   uses: actions/setup-node@v2
