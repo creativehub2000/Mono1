@@ -5,7 +5,7 @@ name: React App CI
 #     workflows: [Node App CI]
 #     types: [completed]
 #     branches: [develop, master]
-#     paths-ignore: ['nodeapp/**', '.github/**']
+
 on:
  pull_request:
     types: [opened, reopened]
@@ -38,3 +38,15 @@ jobs:
 
     - name: Do other steps
       run: echo "Do other steps here..."
+
+    - name: Deploy Test Report to GitHub Page
+      # if: ${{ always() }}
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.SEMANTIC_TOKEN }}
+        publish_dir: ./reactapp/reports
+        publish_branch: gh-pages
+        destination_dir: ./react
+        keep_files: false
+        # allow_empty_commit: true
+
