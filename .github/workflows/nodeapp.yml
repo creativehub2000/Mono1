@@ -51,17 +51,25 @@ jobs:
       env:
           CI: true
 
-    - name: Deploy Test Report to GitHub Page
-      # if: ${{ failure() }}
+    - name: Deploy Test Report to GitHub Page (if Unit tests fail)
       if: ${{ always() && steps.runtests.outcome == 'failure' }}
-      # if: steps.runtests.outcome == 'failure'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.SEMANTIC_TOKEN }}
         publish_dir: ./nodeapp/reports
         publish_branch: gh-pages
+ 
+    - name: Create an Issue (if Unit tests fail)
+      if: ${{ always() && steps.runtests.outcome == 'failure' }}
+      uses: nashmaniac/create-issue-action@v1.1
+      with:
+        title: Tests Failed
+        token: ${{secrets.SEMANTIC_TOKEN}}
+        assignees: ${{github.actor}}
+        labels: test-failed
+        body: "[Check test report here.](https://creativehub2000.github.io/Mono1/index.html)"
 
-    - name: Do other steps
+    - name: Do other steps (If Unit tests success)
       run: echo "Do other steps here..."
 
     # - name: Dump context
