@@ -8,7 +8,8 @@ on:
     #   - 'nodeapp/**'
     
 env:
-  NODE_VERSION: '14.x'
+  NODE_VERSION: '16.x'
+
 
 jobs:
 
@@ -32,32 +33,31 @@ jobs:
           src:
             - 'nodeapp/**'
 
-    - name: Check Workflow need to run
+    - name: Exit Workflow if Node App has no changes
       if: steps.changes.outputs.src == 'false'
       run: exit 1
       
-    - name: Do other steps
-      run: echo "Do other steps here..."
+    # - name: Do other steps
+    #   run: echo "Do other steps here..."
       
-    # - name: Setup Node.js ${{ env.NODE_VERSION }}
-    #   uses: actions/setup-node@v2
-    #   with:
-    #     node-version: ${{ env.NODE_VERSION }}
+    - name: Setup Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ env.NODE_VERSION }}
        
-    # - name: Install App dependencies
-    #   run: npm ci
+    - name: Install App dependencies
+      run: npm ci
 
-    # - name: Run Unit Tests
-    #   run: npm test
+    - name: Run Unit Tests
+      run: npm test
 
     - name: Deploy Test Report to GitHub Page
-      # if: ${{ always() }}
+      if: ${{ failure() }}
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.SEMANTIC_TOKEN }}
         publish_dir: ./nodeapp/reports
         publish_branch: gh-pages
-        # allow_empty_commit: true
   
   Job2-Create-Issue:
     name: Create Issue

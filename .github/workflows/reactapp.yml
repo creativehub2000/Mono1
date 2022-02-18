@@ -13,6 +13,10 @@ on:
     # paths: 
       # - 'reactapp/**'
 
+env:
+  NODE_VERSION: '16.x'
+
+
 jobs:
 
   Job1-Build-ReactApp:
@@ -32,7 +36,7 @@ jobs:
           src:
             - 'reactapp/**'
 
-    - name: Check Workflow need to run
+    - name: Exit Workflow if React App has no changes
       if: steps.changes.outputs.src == 'false'
       run: exit 1
 
@@ -40,7 +44,6 @@ jobs:
       run: echo "Do other steps here..."
 
     - name: Deploy Test Report to GitHub Page
-      # if: ${{ always() }}
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.SEMANTIC_TOKEN }}
@@ -48,5 +51,4 @@ jobs:
         publish_branch: gh-pages
         destination_dir: ./react
         keep_files: false
-        # allow_empty_commit: true
 
