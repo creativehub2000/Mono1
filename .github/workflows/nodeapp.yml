@@ -53,7 +53,8 @@ jobs:
 
     - name: Deploy Test Report to GitHub Page
       # if: ${{ failure() }}
-      if: steps.runtests.outcome == 'failure'
+      if: ${{ always() && steps.runtests.outcome == 'failure' }}
+      # if: steps.runtests.outcome == 'failure'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.SEMANTIC_TOKEN }}
