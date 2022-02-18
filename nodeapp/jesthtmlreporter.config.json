@@ -1,6 +1,6 @@
 {
-	"pageTitle": "Free Learn Test Suite",
+	"pageTitle": "Node App Test Report",
 	"includeFailureMsg": true,
-	"includeSuiteFailure": false,
+	"includeSuiteFailure": true,
 	"outputPath": "./reports/index.html"
 }

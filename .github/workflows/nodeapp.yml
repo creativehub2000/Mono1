@@ -51,25 +51,55 @@ jobs:
       env:
           CI: true
 
-    - name: Deploy Test Report to GitHub Page (if Unit tests fail)
-      if: ${{ always() && steps.runtests.outcome == 'failure' }}
+    - name: Deploy Unit Test Report to GitHub Page (if Unit tests fail)
+      # if: ${{ always() && (steps.runtests.conclusion == 'success') }}
+      if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runtests.outcome == 'success') }}
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.SEMANTIC_TOKEN }}
         publish_dir: ./nodeapp/reports
         publish_branch: gh-pages
  
-    - name: Create an Issue (if Unit tests fail)
-      if: ${{ always() && steps.runtests.outcome == 'failure' }}
-      uses: nashmaniac/create-issue-action@v1.1
-      with:
-        title: Tests Failed
-        token: ${{secrets.SEMANTIC_TOKEN}}
-        assignees: ${{github.actor}}
-        labels: test-failed
-        body: "[Check test report here.](https://creativehub2000.github.io/Mono1/index.html)"
+    - name: Run Tests Coverage
+      # if: ${{ always() && (steps.runtests.conclusion == 'success') }}
+      if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runtests.outcome == 'success') }}
+      id: runcoverage
+      run: npm run test:coverage
+      env:
+          CI: true
 
-    - name: Do other steps (If Unit tests success)
+    - name: Deploy Test Coverage Report to GitHub Page (if Unit tests fail)
+      if: ${{ always() && (steps.runcoverage.outcome == 'failure' || steps.runcoverage.outcome == 'success') }}
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.SEMANTIC_TOKEN }}
+        publish_dir: ./nodeapp/coverage
+        publish_branch: gh-pages
+        destination_dir: ./coverage
+        keep_files: false
+
+    - name: Create an Issue (if Unit tests fail)
+      if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runcoverage.outcome == 'failure') }}
+      uses: JasonEtco/create-an-issue@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.SEMANTIC_TOKEN }}
+      with:
+        filename: .github/ISSUE_TEMPLATE.md
+        assignees: ${{github.actor}}
+
+    # - name: Create an Issue (if Unit tests fail)
+    #   if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runcoverage.outcome == 'failure') }}
+    #   uses: nashmaniac/create-issue-action@v1.1
+    #   with:
+    #     title: Node App Tests/Coverage Failed
+    #     token: ${{secrets.SEMANTIC_TOKEN}}
+    #     assignees: ${{github.actor}}
+    #     labels: nodeapp-test-failed
+    #     body: "[Check test report here.](https://creativehub2000.github.io/Mono1/index.html)"
+
+
+    - name: Do other steps (If all previous steps were success)
+      if: ${{ success() }}
       run: echo "Do other steps here..."
 
     # - name: Dump context

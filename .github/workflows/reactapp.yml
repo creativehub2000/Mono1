@@ -40,16 +40,63 @@ jobs:
       if: steps.changes.outputs.src == 'false'
       run: exit 1
 
-    - name: Deploy Test Report to GitHub Page
+    - name: Setup Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+       
+    - name: Install App dependencies
+      run: npm ci
+
+    - name: Run Unit Tests
+      id: runtests
+      run: npm test
+      env:
+          CI: true
+
+    - name: Deploy Unit Test Report to GitHub Page (if Unit tests fail)
+      if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runtests.outcome == 'success') }}
+      # if: ${{ always() && steps.runtests.outcome == 'failure' }}
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.SEMANTIC_TOKEN }}
         publish_dir: ./reactapp/reports
         publish_branch: gh-pages
-        destination_dir: ./react
+        destination_dir: ./reactapp
         keep_files: false
 
-    - name: Do other steps
+    - name: Run Tests Coverage
+      if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runtests.outcome == 'success') }}
+      # if: always()
+      id: runcoverage
+      run: npm run test:coverage
+      env:
+          CI: true
+
+    - name: Deploy Test Coverage Report to GitHub Page (if Unit tests fail)
+      if: ${{ always() && (steps.runcoverage.outcome == 'failure' || steps.runcoverage.outcome == 'success') }}
+      # if: ${{ always() && steps.runcoverage.outcome == 'success' }}
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.SEMANTIC_TOKEN }}
+        publish_dir: ./reactapp/coverage
+        publish_branch: gh-pages
+        destination_dir: ./reactapp/coverage
+        keep_files: false
+
+    # - name: Create an Issue (if Unit tests fail)
+    #   if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runcoverage.outcome == 'failure') }}
+    #   # if: ${{ always() && steps.runtests.outcome == 'failure' }}
+    #   uses: nashmaniac/create-issue-action@v1.1
+    #   with:
+    #     title: React App Tests Failed
+    #     token: ${{secrets.SEMANTIC_TOKEN}}
+    #     assignees: ${{github.actor}}
+    #     labels:  reactapp-test-failed
+    #     body: "[Check test report here.](https://creativehub2000.github.io/Mono1/reactapp/index.html)"
+
+    - name: Do other steps (If all previous steps were success)
+      if: ${{ success() }}
       run: echo "Do other steps here..."
     
     # - name: Dump context
