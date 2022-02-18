@@ -1,0 +1,14 @@
+name: Test Failed Report Published
+
+on:
+ page_build:
+
+jobs:
+
+  Job1-Publish-Test-Report:
+    name: Publish Report to GitHub Page
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Do other steps
+      run: echo "Do other steps here..."

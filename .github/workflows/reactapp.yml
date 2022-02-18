@@ -1,0 +1,40 @@
+name: React App CI
+
+# on:
+#  workflow_run:
+#     workflows: [Node App CI]
+#     types: [completed]
+#     branches: [develop, master]
+#     paths-ignore: ['nodeapp/**', '.github/**']
+on:
+ pull_request:
+    types: [opened, reopened]
+    branches: [develop, master]
+    # paths: 
+      # - 'reactapp/**'
+
+jobs:
+
+  Job1-Build-ReactApp:
+    name: React App
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Detect File changes
+      uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        filters: |
+          src:
+            - 'reactapp/**'
+
+    - name: Check Workflow need to run
+      if: steps.changes.outputs.src == 'false'
+      run: exit 1
+
+    - name: Do other steps
+      run: echo "Do other steps here..."
