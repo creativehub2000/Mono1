@@ -37,9 +37,6 @@ jobs:
       if: steps.changes.outputs.src == 'false'
       run: exit 1
       
-    # - name: Do other steps
-    #   run: echo "Do other steps here..."
-      
     - name: Setup Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v2
       with:
@@ -49,15 +46,25 @@ jobs:
       run: npm ci
 
     - name: Run Unit Tests
+      id: runtests
       run: npm test
+      env:
+          CI: true
 
     - name: Deploy Test Report to GitHub Page
-      if: ${{ failure() }}
+      # if: ${{ failure() }}
+      if: steps.runtests.outcome == 'failure'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.SEMANTIC_TOKEN }}
         publish_dir: ./nodeapp/reports
         publish_branch: gh-pages
+
+    - name: Do other steps
+      run: echo "Do other steps here..."
+
+    # - name: Dump context
+    #   uses: crazy-max/ghaction-dump-context@v1
   
   Job2-Create-Issue:
     name: Create Issue
@@ -65,8 +72,12 @@ jobs:
     needs: [Job1-Build-NodeApp]
 
     steps:
+
     - name: Do other steps
       run: echo "Do other steps here..."
+
+    - name: Dump context
+      uses: crazy-max/ghaction-dump-context@v1
 
   # Job2-Create-Issue:
   #   name: Create Issue
