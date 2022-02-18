@@ -55,7 +55,7 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.SEMANTIC_TOKEN }}
-        publish_dir: ./reports
+        publish_dir: ./nodeapp/reports
         publish_branch: gh-pages
         allow_empty_commit: true
   
