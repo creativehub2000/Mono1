@@ -1,5 +1,5 @@
 ---
-title: Test/Coverage Report {{ date | date('dddd, MMMM Do') }}
+title: Test Coverage Report {{ date | date('dddd, MMMM Do') }}
 ---
 
 Someone just pushed! Here's who did it: {{ payload.sender.login }}.
