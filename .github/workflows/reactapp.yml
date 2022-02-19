@@ -97,6 +97,9 @@ jobs:
       with:
         filename: .github/ISSUE_TEMPLATE.md
         assignees: ${{github.actor}}
+        milestone: 1
+        update_existing: false
+        search_existing: open
 
 
     # - name: Create an Issue (if Unit tests fail)
