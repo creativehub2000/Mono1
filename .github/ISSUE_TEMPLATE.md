@@ -1,5 +1,5 @@
 ---
-title: Test Coverage Report {{ date | date('dddd, MMMM Do') }}
+title: Test Coverage Report {{ env.TITLE }}
 labels: bug
 ---
 
