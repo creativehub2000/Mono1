@@ -1,6 +1,5 @@
 ---
 title: Test Coverage Report {{ date | date('dddd, MMMM Do') }}
-assignees: freelearn2001
 labels: bug
 ---
 
