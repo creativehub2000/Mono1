@@ -22,6 +22,9 @@ jobs:
   Job1-Build-ReactApp:
     name: React App
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: reactapp
 
     steps:
 
@@ -83,6 +86,18 @@ jobs:
         publish_branch: gh-pages
         destination_dir: ./reactapp/coverage
         keep_files: false
+
+    - name: Create an Issue (if Unit tests fail)
+      if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runcoverage.outcome == 'failure') }}
+      uses: JasonEtco/create-an-issue@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.SEMANTIC_TOKEN }}
+        TITLE: React App Tests/Coverage Failed
+        LABELS: test
+      with:
+        filename: .github/ISSUE_TEMPLATE.md
+        assignees: ${{github.actor}}
+
 
     # - name: Create an Issue (if Unit tests fail)
     #   if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runcoverage.outcome == 'failure') }}

@@ -83,6 +83,8 @@ jobs:
       uses: JasonEtco/create-an-issue@v2
       env:
         GITHUB_TOKEN: ${{ secrets.SEMANTIC_TOKEN }}
+        TITLE: Node App Tests/Coverage Failed
+        LABELS: test
       with:
         filename: .github/ISSUE_TEMPLATE.md
         assignees: ${{github.actor}}
