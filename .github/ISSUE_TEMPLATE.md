@@ -1,5 +1,5 @@
 ---
-title: "{ { env.TITLE } }"
+title: Automated Issue - { { env.TITLE } }
 labels: bug
 ---
 
