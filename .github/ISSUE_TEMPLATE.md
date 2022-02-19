@@ -1,6 +1,5 @@
 ---
 title: { { env.TITLE } }
-assignees: { { github.actor } }
 labels: { { env.LABELS } }
 ---
 
