@@ -87,6 +87,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.SEMANTIC_TOKEN }}
         TITLE: NodeApp Tests Coverage failed
         LABELS: test
+        TEST_REPORT_URL: https://creativehub2000.github.io/Mono1/nodeapp/index.html
+        COVERAGE_REPORT_URL: https://creativehub2000.github.io/Mono1/nodeapp/coverage/lcov-report/index.html
       with:
         assignees: ${{github.actor}}
 
