@@ -75,27 +75,6 @@ jobs:
         destination_dir: ./reactapp
         keep_files: false
 
-    # - name: Deploy Unit Test Report to GitHub Page (if Unit tests fail)
-    #   # if: ${{ always() && steps.runtests.conclusion == 'success' }}
-    #   if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runtests.outcome == 'success') }}
-    #   uses: peaceiris/actions-gh-pages@v3
-    #   with:
-    #     github_token: ${{ secrets.SEMANTIC_TOKEN }}
-    #     publish_dir: ./reactapp/reports
-    #     publish_branch: gh-pages
-    #     destination_dir: ./reactapp
-    #     keep_files: false
-
-    # - name: Deploy Test Coverage Report to GitHub Page (if Unit tests fail)
-    #   if: ${{ always() && (steps.runcoverage.outcome == 'failure' || steps.runcoverage.outcome == 'success') }}
-    #   uses: peaceiris/actions-gh-pages@v3
-    #   with:
-    #     github_token: ${{ secrets.SEMANTIC_TOKEN }}
-    #     publish_dir: ./reactapp/coverage
-    #     publish_branch: gh-pages
-    #     destination_dir: ./reactapp/coverage
-    #     keep_files: false
-
     - name: Create an Issue (if Unit tests fail)
       if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runcoverage.outcome == 'failure') }}
       uses: JasonEtco/create-an-issue@v2
@@ -103,9 +82,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.SEMANTIC_TOKEN }}
         TITLE: ReactApp Tests Coverage failed
         LABELS: test
+        TEST_REPORT_URL: https://creativehub2000.github.io/Mono1/reactapp/index.html
+        COVERAGE_REPORT_URL: https://creativehub2000.github.io/Mono1/reactapp/coverage/lcov-report/index.html
       with:
         assignees: ${{github.actor}}
-
 
     # - name: Create an Issue (if Unit tests fail)
     #   if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runcoverage.outcome == 'failure') }}

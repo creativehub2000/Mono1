@@ -70,16 +70,6 @@ jobs:
         destination_dir: ./nodeapp
         keep_files: false
 
-    # - name: Deploy Test Coverage Report to GitHub Page (if Unit tests fail)
-    #   if: ${{ always() && (steps.runcoverage.outcome == 'failure' || steps.runcoverage.outcome == 'success') }}
-    #   uses: peaceiris/actions-gh-pages@v3
-    #   with:
-    #     github_token: ${{ secrets.SEMANTIC_TOKEN }}
-    #     publish_dir: ./nodeapp/coverage
-    #     publish_branch: gh-pages
-    #     destination_dir: ./coverage
-    #     keep_files: false
-
     - name: Create an Issue (if Unit tests fail)
       if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runcoverage.outcome == 'failure') }}
       uses: JasonEtco/create-an-issue@v2
