@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1645258711351" clover="3.2.0">
-  <project timestamp="1645258711351" name="All files">
+<coverage generated="1645259058073" clover="3.2.0">
+  <project timestamp="1645259058073" name="All files">
     <metrics statements="16" coveredstatements="14" conditionals="3" coveredconditionals="3" methods="6" coveredmethods="4" elements="25" coveredelements="21" complexity="0" loc="16" ncloc="16" packages="1" files="1" classes="1"/>
     <file name="server.ts" path="/home/runner/work/Mono1/Mono1/reactapp/src/server/server.ts">
       <metrics statements="16" coveredstatements="14" conditionals="3" coveredconditionals="3" methods="6" coveredmethods="4"/>
