@@ -1,5 +1,7 @@
 ---
 title: Test Coverage Report {{ date | date('dddd, MMMM Do') }}
+assignees: { { payload.sender.login } }
+labels: bug
 ---
 
 Someone just pushed! Here's who did it: {{ payload.sender.login }}.
