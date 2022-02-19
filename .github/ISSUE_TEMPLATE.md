@@ -1,6 +1,6 @@
 ---
 title: Test Coverage Report {{ date | date('dddd, MMMM Do') }}
-assignees: { { payload.sender.login } }
+assignees: freelearn2001
 labels: bug
 ---
 
