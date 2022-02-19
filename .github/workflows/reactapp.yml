@@ -57,9 +57,16 @@ jobs:
       env:
           CI: true
 
-    - name: Deploy Unit Test Report to GitHub Page (if Unit tests fail)
+    - name: Run Tests Coverage
       if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runtests.outcome == 'success') }}
-      # if: ${{ always() && steps.runtests.outcome == 'failure' }}
+      id: runcoverage
+      run: npm run test:coverage
+      env:
+          CI: true
+
+    - name: Deploy Unit Test Report/Coverage to GitHub Page (if Unit tests fail)
+      # if: ${{ always() && (steps.runtests.conclusion == 'success') }}
+      if: ${{ always() && (steps.runcoverage.outcome == 'failure' || steps.runcoverage.outcome == 'success') }}
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.SEMANTIC_TOKEN }}
@@ -68,24 +75,26 @@ jobs:
         destination_dir: ./reactapp
         keep_files: false
 
-    - name: Run Tests Coverage
-      if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runtests.outcome == 'success') }}
-      # if: always()
-      id: runcoverage
-      run: npm run test:coverage
-      env:
-          CI: true
+    # - name: Deploy Unit Test Report to GitHub Page (if Unit tests fail)
+    #   # if: ${{ always() && steps.runtests.conclusion == 'success' }}
+    #   if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runtests.outcome == 'success') }}
+    #   uses: peaceiris/actions-gh-pages@v3
+    #   with:
+    #     github_token: ${{ secrets.SEMANTIC_TOKEN }}
+    #     publish_dir: ./reactapp/reports
+    #     publish_branch: gh-pages
+    #     destination_dir: ./reactapp
+    #     keep_files: false
 
-    - name: Deploy Test Coverage Report to GitHub Page (if Unit tests fail)
-      if: ${{ always() && (steps.runcoverage.outcome == 'failure' || steps.runcoverage.outcome == 'success') }}
-      # if: ${{ always() && steps.runcoverage.outcome == 'success' }}
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.SEMANTIC_TOKEN }}
-        publish_dir: ./reactapp/coverage
-        publish_branch: gh-pages
-        destination_dir: ./reactapp/coverage
-        keep_files: false
+    # - name: Deploy Test Coverage Report to GitHub Page (if Unit tests fail)
+    #   if: ${{ always() && (steps.runcoverage.outcome == 'failure' || steps.runcoverage.outcome == 'success') }}
+    #   uses: peaceiris/actions-gh-pages@v3
+    #   with:
+    #     github_token: ${{ secrets.SEMANTIC_TOKEN }}
+    #     publish_dir: ./reactapp/coverage
+    #     publish_branch: gh-pages
+    #     destination_dir: ./reactapp/coverage
+    #     keep_files: false
 
     - name: Create an Issue (if Unit tests fail)
       if: ${{ always() && (steps.runtests.outcome == 'failure' || steps.runcoverage.outcome == 'failure') }}
@@ -95,11 +104,7 @@ jobs:
         TITLE: ReactApp Tests Coverage failed
         LABELS: test
       with:
-        filename: .github/ISSUE_TEMPLATE.md
         assignees: ${{github.actor}}
-        milestone: 1
-        update_existing: false
-        search_existing: open
 
 
     # - name: Create an Issue (if Unit tests fail)

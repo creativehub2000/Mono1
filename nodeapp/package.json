@@ -55,7 +55,7 @@
                 "lines": 50
             }
         },
-        "coverageDirectory": "./coverage",
+        "coverageDirectory": "./reports/coverage",
         "testResultsProcessor": "./node_modules/jest-html-reporter"
     }
 }
