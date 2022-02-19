@@ -1,5 +1,5 @@
 ---
-title: Test Coverage Report {{ env.TITLE }}
+title: { { env.TITLE } }
 labels: bug
 ---
 
