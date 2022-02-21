@@ -1,5 +1,5 @@
-import config from 'config';
-import { Server } from './server/Server';
+import 'dotenv/config';
+import { Server } from './server';
 
 
 export class Launcher {
@@ -10,19 +10,17 @@ export class Launcher {
         this.server = new Server( );
     }
 
-    public launchApp( ) {
-        const port = config.get<number>("port");
-        this.server.listen( port );
-        // Calling private method by casting to any! Rarely Used!
-        // (this.server as any).somePrivateLogic( );
+    public async launchApp( ) {
+        try {
+            // initialize application
+            await this.server.initializePersistence();
+
+            // run server
+            this.server.listen(Number(process.env.PORT));
+        } catch(error) {
+            console.log( 'Cannot launch application! : ', error );
+        }
     }
 }
 
 new Launcher( ).launchApp( );
-
-// export class Utils {
-
-//     public static toUpperCase( are: string ) {
-//         return '';
-//     }
-// }
